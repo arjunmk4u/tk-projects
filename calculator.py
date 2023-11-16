@@ -1,5 +1,6 @@
 from tkinter import *
 import math
+import time
 root = Tk()
 # root.geometry("500x500")
 root.title("Calculator")
@@ -9,10 +10,11 @@ e.grid(row= 0,column= 0,columnspan= 4,ipady= 10)
 
 
 def buttonClick(number):                                            #onlcick event
-    e.insert(0,number)
-    if number == False:
-        e.delete(0, END)
+    e.insert(END,number)
 
+
+def delete():                                                       #Textfield clear function
+    e.delete(0,END)
 
 
 def add():                                                          #add function
@@ -52,16 +54,20 @@ def div():                                                           #division f
 def calculate():                                                     #function selection
     secondNumber=e.get()
     e.delete(0,END)
-    if fun=="add":
-        e.insert(0,f_num + int(secondNumber))
-    elif fun=="sub":
-        e.insert(0,f_num - int(secondNumber))
-    elif fun == "mul":
-        e.insert(0,f_num * int(secondNumber))
-    elif fun == "div":
-        e.insert(0,f_num / int(secondNumber))
-    else:
-        pass
+    try:
+        if fun=="add":
+            e.insert(0, f"{f_num} + {secondNumber} = {f_num + int(secondNumber)}")
+        elif fun=="sub":
+            e.insert(0,f"{f_num} - {secondNumber} = {f_num - int(secondNumber)}")
+        elif fun == "mul":
+            e.insert(0,f"{f_num} * {secondNumber} = {f_num * int(secondNumber)}")
+        elif fun == "div":
+            try:
+                e.insert(0,f"{f_num} / {secondNumber} = {f_num / int(secondNumber)}")
+            except ZeroDivisionError:
+                e.insert(0,"Syntax ERROR")
+    except ValueError:
+        e.insert(0,"Enter numeric values")
         
 
 #gui design
@@ -76,7 +82,7 @@ button_seven = Button(root,text="7",padx=30,pady=10,command= lambda: buttonClick
 button_eight = Button(root,text="8",padx=30,pady=10,command= lambda: buttonClick(8)).grid(row=3,column=1)
 button_nine = Button(root,text="9",padx=30,pady=10,command= lambda: buttonClick(9)).grid(row=3,column=2)
 button_zero = Button(root,text="0",padx=30,pady=10,command= lambda: buttonClick(0)).grid(row=4,column=0)
-button_clear = Button(root,text="C",padx=30,pady=10,command= lambda: buttonClick(False)).grid(row=4,column=1)
+button_clear = Button(root,text="C",padx=30,pady=10,command= delete).grid(row=4,column=1)
 button_equal = Button(root,text="=",padx=30,pady=10,command= calculate).grid(row=4,column=2)
 button_div = Button(root,text="/",padx=30,pady=10,command= div).grid(row=1,column=3)
 button_mul = Button(root,text="*",padx=30,pady=10,command= mul).grid(row=2,column=3)
