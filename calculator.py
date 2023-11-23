@@ -6,9 +6,9 @@ root.geometry("395x340")
 root.title("Calculator")
 root.resizable(False,False)
 
-
 e=Entry(root,width = 35, border = 1,font = ("default",15),background="#565656",foreground="white")                    #textbox
 e.grid(row= 0,column= 0,columnspan= 4,ipady= 20)
+
 
 
 def buttonClick(number):                                            #onlcick event
@@ -19,13 +19,21 @@ def delete():                                                       #Textfield c
     e.delete(0,END)
 
 
-def add():                                                          #add function
-    firstNumber= e.get()
-    global f_num
-    global fun
-    fun="add"
-    f_num=int(firstNumber)
-    e.delete(0,END)
+def add():     
+    global valueYes
+    valueYes=e.get()
+    if valueYes:   #bug code need to fix. If one value is there in the textbox (especially number), second input won't take.
+        pass       #But need to fix the valueError. Error occuring on every operations when clicking only on the operation buttons
+    else:
+        try:                                                               #add function
+            firstNumber= e.get()
+            global f_num
+            global fun
+            fun="add"
+            f_num=int(firstNumber)
+            e.delete(0,END)
+        except ValueError:
+            e.insert(0,"Enter values")
 
 def sub():                                                          #subtract function
     firstNumber= e.get()
@@ -69,7 +77,9 @@ def calculate():                                                     #function s
             except ZeroDivisionError:
                 e.insert(0,"Syntax ERROR")
     except ValueError:
-        e.insert(0,"Enter numeric values")
+        e.insert(0,"Value missing")
+    except NameError:
+        e.insert(0,"No input/operation is given")
         
 
 #gui design
