@@ -1,67 +1,86 @@
 from tkinter import *
-import math
-import time
+
+#main window
 root = Tk()
 root.geometry("395x340")
 root.title("Calculator")
 root.resizable(False,False)
 
-e=Entry(root,width = 35, border = 1,font = ("default",15),background="#565656",foreground="white")                    #textbox
+#entry textbox
+e=Entry(root,width = 35, border = 1,font = ("default",15),background="#565656",foreground="white")           
 e.grid(row= 0,column= 0,columnspan= 4,ipady= 20)
 
+#var for check if the textbox contains any string values
+insert_executed=BooleanVar()                                        
+insert_executed.set(False)
 
-
-def buttonClick(number):                                            #onlcick event
+#button click event
+def buttonClick(number):                                            
     e.insert(END,number)
 
-
-def delete():                                                       #Textfield clear function
+#textbox clear function
+def delete():                                                       
     e.delete(0,END)
+    insert_executed.set(False)
 
-
+#addition function
 def add():     
-    global valueYes
-    valueYes=e.get()
-    if valueYes:   #bug code need to fix. If one value is there in the textbox (especially number), second input won't take.
-        pass       #But need to fix the valueError. Error occuring on every operations when clicking only on the operation buttons
-    else:
-        try:                                                               #add function
-            firstNumber= e.get()
-            global f_num
-            global fun
-            fun="add"
-            f_num=int(firstNumber)
-            e.delete(0,END)
-        except ValueError:
-            e.insert(0,"Enter values")
+    try:                                                          
+        firstNumber= e.get()
+        global f_num
+        global fun
+        fun="add"
+        f_num=int(firstNumber)
+        e.delete(0,END)
+    except ValueError:
+        if not insert_executed.get():
+            e.insert(0,"Enter values to calculate")
+            insert_executed.set(True)
 
-def sub():                                                          #subtract function
-    firstNumber= e.get()
-    global f_num
-    global fun
-    fun="sub"
-    f_num=int(firstNumber)
-    e.delete(0,END)
+#subtraction function
+def sub():        
+    try:                                                           
+        firstNumber= e.get()
+        global f_num
+        global fun
+        fun="sub"
+        f_num=int(firstNumber)
+        e.delete(0,END)
+    except ValueError:
+        if not insert_executed.get():
+            e.insert(0,"Enter values to calculate")
+            insert_executed.set(True)
+        
+#multiplication function
+def mul(): 
+    try:                                                           
+        firstNumber= e.get()
+        global f_num
+        global fun
+        fun="mul"
+        f_num=int(firstNumber)
+        e.delete(0,END)
+    except ValueError:
+        if not insert_executed.get():
+            e.insert(0,"Enter values to calculate")
+            insert_executed.set(True)
 
-def mul():                                                          #multiplication function
-    firstNumber= e.get()
-    global f_num
-    global fun
-    fun="mul"
-    f_num=int(firstNumber)
-    e.delete(0,END)
+#division function
+def div():
+    try:                                                           
+        firstNumber= e.get()
+        global f_num
+        global fun
+        fun="div"
+        f_num=int(firstNumber)
+        e.delete(0,END)
+    except ValueError:
+        if not insert_executed.get():
+            e.insert(0,"Enter values to calculate")
+            insert_executed.set(True)
 
-
-def div():                                                           #division function
-    firstNumber= e.get()
-    global f_num
-    global fun
-    fun="div"
-    f_num=int(firstNumber)
-    e.delete(0,END)
-
-
-def calculate():                                                     #function selection
+#function to select which operation is to be done. add, sub, mul, div
+def calculate():                                                   
     secondNumber=e.get()
     e.delete(0,END)
     try:
@@ -82,7 +101,7 @@ def calculate():                                                     #function s
         e.insert(0,"No input/operation is given")
         
 
-#gui design
+#buttons
 root.grid()
 button_one = Button(root,text="1",font=("default",12),background="#565656",foreground="white",border=0.5,padx=40,pady=20,command= lambda: buttonClick(1)).grid(row=1,column=0)
 button_two = Button(root,text="2",font=("default",12),background="#565656",foreground="white",border=0.5,padx=40,pady=20,command= lambda: buttonClick(2)).grid(row=1,column=1)
@@ -101,5 +120,5 @@ button_mul = Button(root,text="*",font=("default",13),background="#3A3A3A",foreg
 button_sub = Button(root,text="-",font=("default",13),background="#3A3A3A",foreground="white",border=0.5,padx=40,pady=20,command= sub).grid(row=3,column=3)
 button_add = Button(root,text="+",font=("default",12),background="#3A3A3A",foreground="white",border=0.5,padx=39,pady=20,command= add).grid(row=4,column=3)
 
-
+#start the tkinter event loop
 root.mainloop()
